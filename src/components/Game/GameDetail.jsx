@@ -42,25 +42,25 @@ const GAMES = [
 
   // 战争
   { id:'hoi4',       cat:'war',   title:'钢铁雄心4',  hours:'300h+', height:260,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/394360/library_600x900.jpg', url:'',
+    img: asset('/games/hoi4.jpg'), url:'',
     bgPosition:'center 30%' },
   { id:'wt',         cat:'war',   title:'战争雷霆',   hours:'900h+', height:300,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/236390/library_600x900.jpg', url:'',
+    img: asset('/games/wt.jpg'), url:'',
     warning:'仇人陷害，不要玩！！！！\n我已经深受其害，脱身不了了。' },
   { id:'stellaris',  cat:'war',   title:'群星',        hours:'150h+', height:280,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/281990/library_600x900.jpg', url:'' },
+    img: asset('/games/stellaris.jpg'), url:'' },
   { id:'wow',        cat:'war',   title:'战舰世界',   hours:'100h+', height:220,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/552990/library_600x900.jpg', url:'' },
+    img: asset('/games/wow.jpg'), url:'' },
   { id:'ace7',       cat:'war',   title:'皇牌空战7',  hours:'',      height:260,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/502500/library_600x900.jpg', url:'' },
+    img: asset('/games/ace7.jpg'), url:'' },
 
   // 合作
   { id:'peak',       cat:'coop',  title:'PEAK',        hours:'',      height:300,
     img: asset('/OIP-C.webp'), url:'' },
   { id:'lethal',     cat:'coop',  title:'致命公司',   hours:'40h+',  height:260,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/1966720/library_600x900.jpg', url:'' },
+    img: asset('/games/lethal.webp'), url:'' },
   { id:'guiltyasock',cat:'coop',  title:'袜罪并罚',   hours:'',      height:280,
-    img:'https://cdn.akamai.steamstatic.com/steam/apps/3400930/library_600x900.jpg', url:'' },
+    img: asset('/games/guiltyasock.jpg'), url:'' },
 ]
 
 const CAT_ORDER = CATEGORIES.map(c => c.id)
