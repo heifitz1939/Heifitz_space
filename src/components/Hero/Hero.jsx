@@ -48,7 +48,7 @@ export default function Hero() {
           className={styles.video}
           poster=""
         >
-          <source src="/video/bg.mp4" type="video/mp4" />
+          <source src="https://github.com/heifitz1939/Heifitz_space/releases/download/1.1/Aemeath.mp4" type="video/mp4" />
         </video>
         <div className={styles.overlay} />
       </div>
