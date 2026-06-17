@@ -1,12 +1,21 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import styles from './Hero.module.css'
+import { asset } from '../../utils/asset'
 
 export default function Hero() {
   const heroRef      = useRef(null)
   const headingRef   = useRef(null)
   const mainTitleRef = useRef(null)
   const subTitleRef  = useRef(null)
+  const videoRef     = useRef(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.muted = true
+    v.play().catch(() => {})
+  }, [])
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -41,14 +50,13 @@ export default function Hero() {
       {/* 视频背景 */}
       <div className={styles.videoBg}>
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
           className={styles.video}
-          src={import.meta.env.DEV
-            ? '/video/bg.mp4'
-            : 'https://github.com/heifitz1939/Heifitz_space/releases/download/1.1/Aemeath.mp4'}
+          src={asset('/video/bg_small.mp4')}
         />
         <div className={styles.overlay} />
       </div>
