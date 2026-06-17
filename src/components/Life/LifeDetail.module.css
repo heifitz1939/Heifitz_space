@@ -1,0 +1,407 @@
+/* ── Overlay 全屏无边距 ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  animation: overlayIn 0.3s ease both;
+}
+.overlayClosing { animation: overlayOut 0.28s ease both; }
+@keyframes overlayIn  { from{opacity:0} to{opacity:1} }
+@keyframes overlayOut { from{opacity:1} to{opacity:0} }
+
+/* ── Panel 撑满全屏 ── */
+.panel {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  animation: panelIn 0.42s cubic-bezier(0.22,1,0.36,1) both;
+}
+.panelClosing { animation: panelOut 0.28s cubic-bezier(0.4,0,1,1) both; }
+@keyframes panelIn  { from{opacity:0;transform:scale(0.98)} to{opacity:1;transform:scale(1)} }
+@keyframes panelOut { from{opacity:1;transform:scale(1)}    to{opacity:0;transform:scale(0.98)} }
+
+/* ── 背景图 + 遮罩 ── */
+.bg {
+  position: absolute; inset: 0;
+  background: url('/c9028c286cae36e23b81856390a5971c166383626.jpg') center center / cover no-repeat;
+}
+.bgTint {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(4,8,20,0.80) 0%,
+    rgba(4,8,20,0.55) 45%,
+    rgba(4,8,20,0.70) 100%
+  );
+}
+
+/* ── 关闭按钮 ── */
+.closeBtn {
+  position: absolute; top: 20px; right: 24px; z-index: 20;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.6); font-size: 0.78rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.closeBtn:hover { background: rgba(200,60,40,0.4); color: #fff; }
+
+/* ── 天气 左上 ── */
+.weather {
+  position: absolute; top: 24px; left: 36px; z-index: 5;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.weatherIcon { font-size: 1.8rem; line-height: 1; }
+.weatherMain { display: flex; align-items: baseline; gap: 8px; }
+.weatherTemp {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.6rem; font-weight: 300; color: #fff;
+  line-height: 1; letter-spacing: -0.02em;
+}
+.weatherCond { font-size: 0.82rem; color: rgba(255,255,255,0.65); letter-spacing: 0.06em; }
+.weatherSub  { font-size: 0.62rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+
+/* ── 三个折叠卡片区 ── */
+.showcase {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; gap: 20px;
+  align-items: stretch;
+  width: min(92%, 920px);
+}
+
+/* ── 单个折叠 tile（游戏卡片风格） ── */
+.tile {
+  flex: 1; min-width: 0;
+  position: relative;
+  min-height: 380px;
+  display: flex; flex-direction: column;
+  padding: 36px 28px 32px;
+  background: rgba(6,10,26,0.35);
+  border: 1px solid rgba(79,158,255,0.28);
+  box-shadow:
+    inset 0 0 0 1px rgba(79,158,255,0.08),
+    0 0 0 1px rgba(20,50,100,0.5),
+    inset 0 1px 0 rgba(120,180,255,0.12),
+    0 4px 32px rgba(0,0,0,0.55);
+  border-radius: 10px;
+  cursor: pointer; overflow: hidden; text-align: left;
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+  animation: tileIn 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: calc(var(--ti) * 0.1s + 0.05s);
+  opacity: 0;
+}
+@keyframes tileIn {
+  from { opacity:0; transform:translateY(28px) scale(0.95); }
+  to   { opacity:1; transform:none; }
+}
+/* 左上截角 */
+.tile::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 22px; height: 22px;
+  border-top: 2px solid rgba(79,158,255,0.6);
+  border-left: 2px solid rgba(79,158,255,0.6);
+  border-radius: 10px 0 0 0;
+  pointer-events: none;
+}
+/* 右下截角 */
+.tile::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 22px; height: 22px;
+  border-bottom: 2px solid rgba(79,158,255,0.6);
+  border-right: 2px solid rgba(79,158,255,0.6);
+  border-radius: 0 0 10px 0;
+  pointer-events: none;
+}
+.tile:hover {
+  background: rgba(10,18,44,0.52);
+  border-color: rgba(79,158,255,0.6);
+  box-shadow:
+    inset 0 0 0 1px rgba(79,158,255,0.14),
+    0 0 0 1px rgba(40,80,160,0.5),
+    inset 0 1px 0 rgba(140,200,255,0.2),
+    0 8px 48px rgba(0,0,0,0.7),
+    0 0 24px rgba(79,158,255,0.08);
+}
+
+.tileGlow {
+  position: absolute; inset: 0; border-radius: 10px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(79,158,255,0.1) 0%, transparent 65%);
+  opacity: 0; transition: opacity 0.28s; pointer-events: none;
+}
+.tile:hover .tileGlow { opacity: 1; }
+
+.tileNum {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(79,158,255,0.38); display: block; margin-bottom: 20px;
+}
+
+.tileIcon { font-size: 2.6rem; line-height: 1; display: block; margin-bottom: 16px; }
+
+.tileMain { flex: 1; display: flex; flex-direction: column; }
+
+/* 大描边标题 */
+.tileTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.6rem; font-weight: 800; letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(160,200,255,0.9);
+  display: block; line-height: 1; margin-bottom: 8px;
+  text-shadow:
+    0 0 8px rgba(79,158,255,0.55),
+    0 0 20px rgba(79,158,255,0.3),
+    0 0 40px rgba(79,158,255,0.15);
+  transition: text-shadow 0.25s;
+}
+.tile:hover .tileTitle {
+  -webkit-text-stroke-color: rgba(200,225,255,1);
+  text-shadow:
+    0 0 8px rgba(100,180,255,0.8),
+    0 0 20px rgba(79,158,255,0.5),
+    0 0 48px rgba(79,158,255,0.28);
+}
+
+.tileEn {
+  font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(140,170,210,0.5); display: block; margin-bottom: 16px;
+}
+
+.tileDesc { font-size: 0.88rem; color: rgba(190,210,240,0.62); line-height: 1.75; }
+
+.tileArrow {
+  position: absolute; bottom: 24px; right: 24px;
+  font-size: 1.2rem; color: rgba(79,158,255,0.3);
+  transition: color 0.2s, transform 0.25s;
+}
+.tile:hover .tileArrow { color: rgba(79,158,255,0.9); transform: translateX(6px); }
+
+/* ── 展开覆盖层 ── */
+.expanded {
+  position: absolute;
+  inset: 70px 32px 110px;
+  z-index: 10;
+  background: rgba(5,9,22,0.85);
+  backdrop-filter: blur(28px);
+  border: 1px solid rgba(79,158,255,0.2);
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  animation: expandIn 0.32s cubic-bezier(0.22,1,0.36,1) both;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(79,158,255,0.06);
+}
+@keyframes expandIn {
+  from { opacity:0; transform:scale(0.95) translateY(12px); }
+  to   { opacity:1; transform:scale(1)    translateY(0); }
+}
+.expanded::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(79,158,255,0.5), transparent);
+}
+
+.backBtn {
+  position: absolute; top: 14px; left: 20px; z-index: 5;
+  background: none; border: none; cursor: pointer;
+  color: rgba(79,158,255,0.7); font-size: 0.8rem;
+  font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.06em;
+  transition: color 0.2s;
+  padding: 4px 8px;
+}
+.backBtn:hover { color: #4f9eff; }
+
+.expInner {
+  flex: 1; display: flex; flex-direction: column;
+  padding: 14px 28px 20px; overflow: hidden;
+}
+.expHeader { padding-top: 12px; margin-bottom: 16px; }
+.expLabel {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.55rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(79,158,255,0.65);
+}
+.expTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15rem; font-weight: 600;
+  color: #e8f0ff; margin: 4px 0 0; letter-spacing: -0.01em;
+}
+
+/* ── 课表 ── */
+.schWrap {
+  flex: 1; overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79,158,255,0.25) transparent;
+}
+
+.schGrid {
+  display: grid;
+  grid-template-columns: 80px repeat(5, 1fr);
+  grid-template-rows: 28px repeat(10, 1fr);
+  gap: 2px;
+  min-height: 100%;
+  position: relative;
+}
+
+.schCorner {
+  grid-column: 1; grid-row: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3);
+}
+
+.schDayHd {
+  grid-row: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem; font-weight: 500;
+  color: rgba(255,255,255,0.5); letter-spacing: 0.08em;
+  background: rgba(79,158,255,0.06);
+  border-radius: 4px 4px 0 0;
+}
+.schToday { color: #4f9eff !important; background: rgba(79,158,255,0.14) !important; }
+
+.schTime {
+  grid-column: 1;
+  display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+  padding-right: 8px; gap: 1px;
+}
+.schPeriodNum {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem; font-weight: 600;
+  color: rgba(79,158,255,0.6);
+}
+.schPeriodTime { font-size: 0.46rem; color: rgba(255,255,255,0.28); letter-spacing: 0.04em; }
+
+.schCell {
+  background: rgba(255,255,255,0.025);
+  border-radius: 2px;
+  min-height: 40px;
+}
+.schCellToday { background: rgba(79,158,255,0.06); }
+
+.schCourse {
+  border-left: 2px solid var(--cc);
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+  padding: 5px 7px;
+  display: flex; flex-direction: column; gap: 2px;
+  overflow: hidden; z-index: 2;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+.schCourseName {
+  font-size: 0.65rem; font-weight: 600;
+  color: #e8f0ff; line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.schCourseRoom   { font-size: 0.55rem; color: rgba(255,255,255,0.4); }
+.schCourseTeacher{ font-size: 0.52rem; color: rgba(255,255,255,0.3); }
+
+/* ── 吐槽笔记 ── */
+.noteList {
+  flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79,158,255,0.2) transparent;
+}
+
+.noteItem {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 12px 16px;
+  animation: noteIn 0.38s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: calc(var(--ni) * 0.06s + 0.1s);
+  opacity: 0;
+}
+@keyframes noteIn {
+  from { opacity:0; transform:translateX(-12px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+
+.noteItemTitle {
+  background: rgba(255,200,50,0.07);
+  border-color: rgba(255,200,50,0.25);
+}
+
+.noteMeta {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.noteMood { font-size: 1rem; line-height: 1; }
+.noteDate { font-size: 0.6rem; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; }
+
+.noteText {
+  font-size: 0.82rem; color: rgba(255,255,255,0.72);
+  line-height: 1.7; margin: 0;
+}
+.noteTextBig {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.35rem;
+  color: #ffe566;
+  text-decoration: underline; text-underline-offset: 4px;
+  text-decoration-color: rgba(255,229,102,0.5);
+  line-height: 1.3;
+}
+
+/* ── 歌单 ── */
+.songTop {
+  display: flex; align-items: center; gap: 20px;
+  padding: 18px 20px;
+  background: rgba(79,158,255,0.08);
+  border: 1px solid rgba(79,158,255,0.2);
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+.songTopRank {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.2rem; font-weight: 700;
+  color: rgba(79,158,255,0.5); line-height: 1;
+}
+.songTopTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem; font-weight: 600; color: #e8f0ff;
+}
+.songTopArtist { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+.songList {
+  flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+  scrollbar-width: thin; scrollbar-color: rgba(79,158,255,0.2) transparent;
+}
+.songRow {
+  display: flex; align-items: center; gap: 14px;
+  padding: 9px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.18s;
+}
+.songRow:hover { background: rgba(79,158,255,0.06); border-radius: 4px; }
+.songRank {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem; font-weight: 600; color: rgba(79,158,255,0.4);
+  min-width: 22px; text-align: right;
+}
+.songTitle { font-size: 0.82rem; color: rgba(255,255,255,0.8); flex: 1; min-width: 0; }
+.songArtist { font-size: 0.7rem; color: rgba(255,255,255,0.35); white-space: nowrap; }
+
+/* ── 时钟 右下 ── */
+.clock {
+  position: absolute; bottom: 28px; right: 36px; z-index: 5;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+}
+.clockTime {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3.4rem; font-weight: 200; color: #fff;
+  line-height: 1; letter-spacing: -0.04em;
+  display: flex; align-items: flex-start;
+}
+.clockAmpm {
+  font-size: 0.9rem; font-weight: 400;
+  color: rgba(255,255,255,0.55); letter-spacing: 0.08em;
+  margin-top: 8px; margin-left: 4px;
+}
+.clockSec {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem; color: rgba(79,158,255,0.6); letter-spacing: 0.2em;
+  align-self: flex-end; margin-top: -4px;
+}
+.clockDate {
+  font-size: 0.58rem; color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}

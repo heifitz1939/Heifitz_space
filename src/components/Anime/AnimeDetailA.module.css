@@ -1,0 +1,272 @@
+/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(5, 5, 10, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 24px 60px;
+  overflow-y: auto;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Panel ── */
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 1300px;
+  background: linear-gradient(160deg, #0d0f1c 0%, #0a0c18 100%);
+  border: 1px solid rgba(79, 158, 255, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(79,158,255,0.08);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 关闭按钮 ── */
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 10;
+}
+
+.closeBtn:hover {
+  background: rgba(79,158,255,0.12);
+  color: var(--accent);
+  border-color: rgba(79,158,255,0.4);
+}
+
+/* ── Header ── */
+.header {
+  padding: 36px 44px 28px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(to right, rgba(79,158,255,0.04) 0%, transparent 60%);
+}
+
+.headerLabel {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.headerTitle {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.headerSub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Body ── */
+.body {
+  padding: 36px 40px 40px;
+}
+
+/* ── 卡片瀑布网格 ── */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* ── 单张卡片 ── */
+.card {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  animation: cardIn 0.5s cubic-bezier(0.4,0,0.2,1) both;
+  animation-delay: calc(var(--idx) * 0.06s);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card:hover {
+  border-color: rgba(79,158,255,0.4);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 24px rgba(79,158,255,0.08);
+  transform: translateY(-4px);
+  z-index: 2;
+}
+
+/* ── 封面 ── */
+.coverWrap {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s ease, filter 0.3s ease;
+  filter: brightness(0.85) saturate(0.85);
+}
+
+.card:hover .cover {
+  transform: scale(1.06);
+  filter: brightness(0.5) saturate(0.6);
+}
+
+.coverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9,9,15,0.9) 0%, transparent 55%);
+}
+
+/* ── 常驻底部 ── */
+.cardFooter {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: opacity 0.25s ease;
+}
+
+.card:hover .cardFooter {
+  opacity: 0;
+}
+
+.animeTitle {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* ── 悬浮评语层 ── */
+.hoverPanel {
+  position: absolute;
+  inset: 0;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: flex-end;
+  background: linear-gradient(
+    to top,
+    rgba(9,9,20,0.97) 0%,
+    rgba(9,9,20,0.85) 50%,
+    rgba(9,9,20,0.55) 100%
+  );
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+
+.card:hover .hoverPanel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hoverTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.hoverTitle {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.hoverYear {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(79,158,255,0.18);
+  color: rgba(179,210,255,0.9);
+  border: 1px solid rgba(79,158,255,0.25);
+}
+
+.comment {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 2px solid rgba(79,158,255,0.4);
+  padding-left: 8px;
+}
+
+/* ── 星级 ── */
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.starOn  { font-size: 0.58rem; color: #f5c842; }
+.starOff { font-size: 0.58rem; color: rgba(255,255,255,0.12); }
+
+.scoreNum {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-left: 5px;
+  letter-spacing: 0.05em;
+}

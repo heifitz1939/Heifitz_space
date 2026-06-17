@@ -1,0 +1,264 @@
+.section {
+  padding: 140px 0 120px;
+  background: transparent;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* Section label */
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.labelLine {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Heading */
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* 2×2 grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* 入场动画包裹层 — initial state owned by GSAP */
+.cardWrap {}
+
+/* BorderGlow 外层尺寸撑满格子 */
+.glowCard {
+  width: 100%;
+  height: 100%;
+}
+
+/* 卡片按钮：左右两栏布局 */
+.cardBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 180px;
+}
+
+.cardBtn:hover {
+  transform: translateY(-2px);
+}
+
+/* 大号背景序号 — 已移入图片面板，保留供图片面板内使用 */
+.numBg {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-family: var(--font-heading);
+  font-size: 5.5rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.82);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+
+/* ── 右侧图片面板 ── */
+.cardImgPanel {
+  position: relative;
+  width: 42%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* 图片本体 */
+.cardImgBg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.cardBtn:hover .cardImgBg {
+  transform: scale(1.05);
+}
+
+/* 图片左侧斜切蒙版：从卡片背景色渐变到透明，形成斜边与文字区的过渡 */
+.cardImgMask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgb(11, 14, 33)        0%,
+    rgb(11, 14, 33)        12%,
+    rgba(11, 14, 33, 0.7)  28%,
+    rgba(11, 14, 33, 0)    52%
+  );
+  /* 斜切：左边缘竖直，右边缘倾斜（右上角缩进，右下角放开） */
+  clip-path: polygon(0 0, 55% 0, 35% 100%, 0 100%);
+}
+
+/* ── 左侧内容区 ── */
+
+/* 底部光条 */
+.bottomGlow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(79, 158, 255, 0.5) 50%,
+    transparent
+  );
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cardBtn:hover .bottomGlow {
+  transform: scaleX(1);
+}
+
+/* Card inner layout */
+.cardInner {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  z-index: 1;
+  padding: 36px 24px 32px 40px;
+  justify-content: center;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.numFg {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.cardEn {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  transition: color 0.25s ease;
+  line-height: 1.1;
+}
+
+.cardBtn:hover .cardTitle {
+  color: #fff;
+}
+
+.cardDesc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+}
+
+/* Footer */
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.statDot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(79, 158, 255, 0.7);
+  animation: dotPulse 2.2s ease infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.stat {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 1rem;
+  color: var(--text-muted);
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.cardBtn:hover .arrow {
+  transform: translateX(5px);
+  color: var(--accent);
+}

@@ -1,0 +1,127 @@
+/* Overlay 全屏暗色遮罩 */
+.overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  animation: overlayIn 0.28s ease both;
+}
+.overlayOut { animation: overlayFade 0.28s ease both; }
+@keyframes overlayIn   { from{opacity:0} to{opacity:1} }
+@keyframes overlayFade { from{opacity:1} to{opacity:0} }
+
+/* Modal 主体 */
+.modal {
+  position: relative;
+  width: 100%; max-width: 1080px;
+  max-height: calc(100vh - 48px);
+  background: rgba(6,10,24,0.96);
+  border: 1px solid rgba(79,158,255,0.22);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 32px 96px rgba(0,0,0,0.8), 0 0 0 1px rgba(79,158,255,0.06);
+  animation: modalIn 0.35s cubic-bezier(0.22,1,0.36,1) both;
+}
+.modalOut { animation: modalDown 0.28s cubic-bezier(0.4,0,1,1) both; }
+@keyframes modalIn   { from{opacity:0;transform:scale(0.96) translateY(16px)} to{opacity:1;transform:none} }
+@keyframes modalDown { from{opacity:1;transform:none} to{opacity:0;transform:scale(0.96) translateY(10px)} }
+
+/* 关闭按钮 */
+.closeBtn {
+  position: absolute; top: 14px; right: 16px; z-index: 10;
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.5);
+  font-size: 0.72rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.closeBtn:hover { background: rgba(200,50,40,0.4); color: #fff; }
+
+/* 顶部横幅 */
+.banner {
+  width: 100%; flex-shrink: 0;
+  border-bottom: 1px solid rgba(79,158,255,0.15);
+}
+.bannerImg {
+  width: 100%; height: auto; display: block;
+}
+
+/* 主体两栏 */
+.body {
+  display: flex; gap: 0;
+  flex: 1; min-height: 0;
+  overflow: hidden;
+}
+
+/* 左侧图片 */
+.sideImg {
+  flex-shrink: 0; width: 420px;
+  border-right: 1px solid rgba(79,158,255,0.1);
+  overflow: hidden; align-self: stretch;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 16px;
+  background: rgba(255,255,255,0.02);
+}
+.sideImgEl {
+  width: 100%; height: auto; max-height: 100%;
+  object-fit: contain; object-position: top center;
+  display: block;
+}
+
+/* 右侧内容 */
+.content {
+  flex: 1; padding: 28px 32px 28px;
+  display: flex; flex-direction: column; gap: 12px;
+  overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: rgba(79,158,255,0.2) transparent;
+}
+
+/* Pitch 文字 */
+.pitchText {
+  font-size: 0.92rem; color: rgba(220,230,255,0.85);
+  line-height: 1.85; margin: 0;
+}
+.cry {
+  color: #f87171; font-weight: 700;
+  text-shadow: 0 0 12px rgba(248,113,113,0.5);
+}
+.cta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem; font-weight: 700;
+  color: #fbbf24;
+  text-shadow: 0 0 16px rgba(251,191,36,0.5);
+  letter-spacing: 0.04em;
+}
+
+/* Intro 文字 */
+.introTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem; font-weight: 600; color: #a8d4ff;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.introText {
+  font-size: 0.88rem; color: rgba(200,215,240,0.78);
+  line-height: 1.9; margin: 0;
+}
+
+/* 行动按钮 */
+.interestBtn {
+  margin-top: auto; align-self: flex-start;
+  padding: 10px 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em;
+  color: #e8f0ff;
+  background: rgba(79,158,255,0.15);
+  border: 1px solid rgba(79,158,255,0.4);
+  border-radius: 4px; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.interestBtn:hover {
+  background: rgba(79,158,255,0.28);
+  border-color: rgba(79,158,255,0.75);
+  color: #fff;
+}

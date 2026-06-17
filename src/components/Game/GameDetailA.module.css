@@ -1,0 +1,438 @@
+/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(4, 6, 14, 0.92);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  animation: overlayIn 0.32s ease both;
+}
+.overlayClosing { animation: overlayOut 0.3s ease both; }
+@keyframes overlayIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes overlayOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* ── Panel ── */
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 1260px;
+  height: calc(100vh - 64px);
+  max-height: 860px;
+  background: linear-gradient(160deg, #080c1e 0%, #060916 100%);
+  border: 1px solid rgba(79, 158, 255, 0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: panelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(79,158,255,0.07);
+}
+.panelClosing { animation: panelOut 0.28s cubic-bezier(0.4,0,1,1) both; }
+@keyframes panelIn  { from { opacity:0; transform: translateY(28px) scale(0.96); } to { opacity:1; transform: none; } }
+@keyframes panelOut { from { opacity:1; transform: none; } to { opacity:0; transform: translateY(18px) scale(0.97); } }
+
+/* ── 关闭按钮 ── */
+.closeBtn {
+  position: absolute;
+  top: 20px; right: 24px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.45);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 20;
+}
+.closeBtn:hover {
+  background: rgba(79,158,255,0.12);
+  color: #4f9eff;
+  border-color: rgba(79,158,255,0.4);
+}
+
+/* ── Header ── */
+.header {
+  flex-shrink: 0;
+  padding: 26px 44px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(to right, rgba(79,158,255,0.04) 0%, transparent 60%);
+  animation: fadeDown 0.35s cubic-bezier(0.4,0,0.2,1) 0.1s both;
+  position: relative;
+  z-index: 2;
+}
+@keyframes fadeDown {
+  from { opacity:0; transform: translateY(-10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.headerLabel {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #4f9eff;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.headerTitle {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #e8eaf0;
+}
+.headerSub {
+  font-size: 0.8rem;
+  color: rgba(180,190,210,0.55);
+  margin-top: 0.2rem;
+}
+
+/* ═══════════════════════════════════════════
+   核心布局：四列 grid，通过 grid-template-columns 动画切换
+   初始：1fr 1fr 1fr 0fr（三张卡片，游戏列隐藏）
+   选中 i 后：对应卡片 280px，其余 0px，游戏列 1fr
+   ═══════════════════════════════════════════ */
+.body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  /* 由 JS 通过 inline style 控制 */
+  grid-template-columns: var(--cols, 1fr 1fr 1fr 0px);
+  transition: grid-template-columns 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── 分类卡片（初始模式） ── */
+.catCol {
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+  cursor: pointer;
+  transition: filter 0.3s;
+}
+.catCol:not(:last-child) {
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+/* 卡片背景：每列独立渐变色 */
+.catColBg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  transition: opacity 0.35s;
+}
+.catCol:hover .catColBg { opacity: 0.28; }
+
+/* 全屏卡片内容（初始模式） */
+.catFull {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  transition: opacity 0.3s, transform 0.4s;
+}
+.catColSidebar .catFull {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9);
+}
+
+/* 大图标圆 */
+.catBigIcon {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+              background 0.3s,
+              border-color 0.3s;
+  flex-shrink: 0;
+}
+.catCol:hover .catBigIcon {
+  transform: scale(1.1) translateY(-4px);
+  background: rgba(255,255,255,0.09);
+}
+.catBigName {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e8eaf0;
+  letter-spacing: -0.02em;
+}
+.catBigNameEn {
+  font-size: 0.68rem;
+  color: rgba(160,190,230,0.45);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.catBigDesc {
+  font-size: 0.78rem;
+  color: rgba(170,195,230,0.55);
+  line-height: 1.7;
+  max-width: 200px;
+}
+.catBigCount {
+  margin-top: 8px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(200,220,255,0.55);
+}
+/* 底部"点击进入"提示 */
+.catEnterHint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(130,160,200,0.35);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+.catCol:hover .catEnterHint { opacity: 1; }
+
+/* ── 侧边栏模式（卡片被选中，收窄后） ── */
+.catColSidebar {
+  cursor: default;
+  min-width: 0;
+}
+/* 侧边栏内的竖排简洁内容 */
+.catSide {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 24px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s 0.28s, transform 0.3s 0.28s;
+}
+.catColSidebar .catSide {
+  opacity: 1;
+  transform: translateX(0);
+}
+.catSideIcon {
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.catSideName {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(200,220,255,0.65);
+  letter-spacing: 0.06em;
+  /* 竖排文字 */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+/* 返回按钮 */
+.backBtn {
+  font-size: 0.62rem;
+  color: rgba(130,170,255,0.6);
+  background: rgba(79,158,255,0.06);
+  border: 1px solid rgba(79,158,255,0.15);
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  writing-mode: vertical-rl;
+  transition: background 0.18s, color 0.18s;
+}
+.backBtn:hover {
+  background: rgba(79,158,255,0.14);
+  color: #a8d4ff;
+}
+
+/* ── 游戏列（第 4 列） ── */
+.gameCol {
+  overflow: hidden;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(79,158,255,0.1);
+  /* 内容在列展开前不可见 */
+  opacity: 0;
+  transition: opacity 0.3s 0.3s;
+}
+.gameColVisible {
+  opacity: 1;
+}
+
+/* 分类标签行 */
+.gameCatTabs {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid rgba(79,158,255,0.08);
+  flex-wrap: wrap;
+}
+.gameCatTab {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(79,158,255,0.14);
+  background: rgba(79,158,255,0.05);
+  color: rgba(160,190,230,0.6);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.gameCatTab:hover {
+  background: rgba(79,158,255,0.1);
+  color: rgba(180,210,255,0.85);
+}
+.gameCatTabActive {
+  background: rgba(79,158,255,0.18);
+  border-color: rgba(79,158,255,0.45);
+  color: #a8d4ff;
+}
+
+/* 滚动区 */
+.gameScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79,158,255,0.25) transparent;
+}
+.gameScroll::-webkit-scrollbar { width: 4px; }
+.gameScroll::-webkit-scrollbar-track { background: transparent; }
+.gameScroll::-webkit-scrollbar-thumb { background: rgba(79,158,255,0.25); border-radius: 2px; }
+
+.gameGrid {
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+  align-content: start;
+}
+
+/* ── 游戏卡片 ── */
+.gameCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(79,158,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  animation: cardIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: calc(var(--idx, 0) * 0.04s);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+.gameCard:hover {
+  border-color: rgba(79,158,255,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 0 16px rgba(79,158,255,0.07);
+}
+.gameCover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(20,28,56,0.6);
+}
+.gameCoverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.82) saturate(0.88);
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+.gameCard:hover .gameCoverImg {
+  transform: scale(1.05);
+  filter: brightness(1) saturate(1);
+}
+.gameCoverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6,9,22,0.88) 0%, transparent 55%);
+}
+.gameCoverTags {
+  position: absolute;
+  bottom: 7px;
+  left: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.gameTag {
+  font-size: 0.56rem;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background: rgba(79,158,255,0.2);
+  color: rgba(179,210,255,0.9);
+  border: 1px solid rgba(79,158,255,0.25);
+}
+.gamePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: linear-gradient(135deg, rgba(20,30,60,0.8) 0%, rgba(10,16,36,0.9) 100%);
+}
+.gameBody {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.gameTitle {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e0e8f8;
+  line-height: 1.35;
+}
+.gameMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.gameYear  { font-size: 0.6rem; color: rgba(130,160,200,0.5); letter-spacing: 0.08em; }
+.gameHours { font-size: 0.6rem; color: #4f9eff; letter-spacing: 0.05em; }
+.gameComment {
+  font-size: 0.7rem;
+  color: rgba(170,190,220,0.62);
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 2px solid rgba(79,158,255,0.22);
+  padding-left: 7px;
+  margin-top: 3px;
+}

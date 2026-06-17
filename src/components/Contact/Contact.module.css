@@ -1,0 +1,110 @@
+.section {
+  padding: 140px 0 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  flex: 1;
+  padding-bottom: 80px;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.labelLine {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.content {
+  max-width: 720px;
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.sub {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: var(--text-primary);
+}
+
+.link:hover .linkValue {
+  color: var(--accent);
+}
+
+.link svg {
+  margin-left: auto;
+  opacity: 0.4;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.link:hover svg {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.linkLabel {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 70px;
+}
+
+.linkValue {
+  font-size: 0.925rem;
+  transition: color 0.2s;
+}
+
+.footer {
+  padding: 1.5rem 48px;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  max-width: 100%;
+}

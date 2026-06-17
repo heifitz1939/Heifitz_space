@@ -1,0 +1,348 @@
+/* ── 入场 GridScan 扫描层 ── */
+.scanIntro {
+  position: fixed; inset: 0; z-index: 299;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+.scanIntroHide { opacity: 0; }
+
+/* ── Overlay：纯暗色容器，背景图由独立层处理 ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: transparent;
+  display: flex; align-items: center; justify-content: center; padding: 32px 24px;
+}
+/* 扫描期间：纯黑 */
+.overlayBlack {
+  background: #000000 !important;
+}
+.overlayClosing { animation: overlayOut 0.3s ease both; }
+@keyframes overlayOut { from { opacity:1; } to { opacity:0; } }
+
+/* ══════════════════════════════
+   背景图层 — 砖块切换
+   ══════════════════════════════ */
+.bgLayer {
+  position: fixed; inset: 0; z-index: 201;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 旧背景垫底，不动 */
+.bgSlidePrev {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover;
+  background-position: center center;
+  filter: brightness(0.38) saturate(0.5);
+}
+
+/* 菜单阶段静态背景 */
+.bgStatic {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover;
+  background-position: center center;
+  filter: brightness(0.38) saturate(0.5);
+}
+
+/* 砖块容器：8 列并排 */
+.brickContainer {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex;
+}
+
+/* 每一列砖块 */
+.brick {
+  flex: 1;
+  background-size: cover;
+  background-position: center center;
+  filter: brightness(0.38) saturate(0.5);
+  transform: translateX(calc(var(--dir, 1) * 60px));
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.brickAnimate {
+  animation: brickSlideIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--col, 0) * 0.052s);
+}
+
+@keyframes brickSlideIn {
+  from { transform: translateX(calc(var(--dir, 1) * 60px)); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* 全局渐变蒙版压在所有背景之上 */
+.bgLayer::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgba(4,6,20,0.72) 0%,
+    rgba(4,6,20,0.42) 30%,
+    rgba(4,6,20,0.42) 70%,
+    rgba(4,6,20,0.82) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Panel：无背景，无边框，全透明容器 ── */
+.panel {
+  position: relative; width: 100%; max-width: 1260px;
+  height: calc(100vh - 64px); max-height: 860px;
+  background: transparent;
+  border: none;
+  overflow: hidden; display: flex; flex-direction: column;
+  z-index: 210;
+}
+/* 淡入入场 */
+.panelReveal {
+  animation: panelFadeIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+.panelReady {
+  /* fully visible, no animation needed */
+}
+.panelClosing { animation: panelOut 0.28s cubic-bezier(0.4,0,1,1) both; }
+@keyframes panelFadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+@keyframes panelOut    { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(14px); } }
+
+.closeBtn {
+  position: absolute; top:20px; right:24px; width:36px; height:36px;
+  border-radius:50%; border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.5);
+  font-size:0.85rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s,color 0.2s,border-color 0.2s; z-index:20;
+}
+.closeBtn:hover { background:rgba(79,158,255,0.16); color:#4f9eff; border-color:rgba(79,158,255,0.45); }
+
+.header {
+  flex-shrink:0; padding:26px 44px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  position:relative; z-index:2;
+  animation:fadeDown 0.4s cubic-bezier(0.4,0,0.2,1) 0.05s both;
+}
+@keyframes fadeDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+.headerLabel { font-family:var(--font-heading); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:#4f9eff; display:block; margin-bottom:0.35rem; }
+.headerTitle { font-family:var(--font-heading); font-size:1.7rem; font-weight:600; letter-spacing:-0.02em; color:#e8eaf0; }
+.headerSub   { font-size:0.8rem; color:rgba(180,190,210,0.5); margin-top:0.2rem; }
+
+/* ── Body ── */
+.body {
+  flex:1; min-height:0; position:relative; overflow:hidden;
+  display:flex; align-items:stretch; justify-content:center;
+}
+
+/* 确保内容层在背景之上 */
+.catMenu,
+.gameLayer { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════
+   分类卡片菜单 — 三张竖向拉长，几乎透明
+   ═══════════════════════════════════════ */
+.catMenu {
+  display: flex;
+  gap: 18px;
+  padding: 28px 44px 32px;
+  width: 100%;
+  align-items: stretch;
+}
+
+/* BorderGlow 外壳 */
+.catCardGlow {
+  flex: 1;
+  min-width: 0;
+  border-radius: 10px;
+  animation: catCardIn 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: calc(var(--i, 0) * 0.1s + 0.05s);
+}
+@keyframes catCardIn {
+  from { opacity:0; transform:translateY(28px) scale(0.95); }
+  to   { opacity:1; transform:none; }
+}
+
+/* 卡片主体：厚重科幻边框，高透明背景 */
+.catCard {
+  width: 100%; height: 100%;
+  padding: 40px 32px 36px;
+  display: flex; flex-direction: column;
+  background: rgba(6,10,26,0.35);
+  border: 1px solid rgba(79,158,255,0.28);
+  /* 双层边框：外层 box-shadow 模拟第二道线框 */
+  box-shadow:
+    inset 0 0 0 1px rgba(79,158,255,0.08),
+    0 0 0 1px rgba(20,50,100,0.5),
+    inset 0 1px 0 rgba(120,180,255,0.12),
+    0 4px 32px rgba(0,0,0,0.55);
+  cursor: pointer;
+  text-align: left; position: relative; overflow: hidden;
+  border-radius: 10px;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+/* 左上角截角装饰 */
+.catCard::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 22px; height: 22px;
+  border-top: 2px solid rgba(79,158,255,0.6);
+  border-left: 2px solid rgba(79,158,255,0.6);
+  border-radius: 10px 0 0 0;
+  pointer-events: none;
+}
+/* 右下角截角装饰 */
+.catCard::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 22px; height: 22px;
+  border-bottom: 2px solid rgba(79,158,255,0.6);
+  border-right: 2px solid rgba(79,158,255,0.6);
+  border-radius: 0 0 10px 0;
+  pointer-events: none;
+}
+.catCard:hover {
+  background: rgba(10,18,44,0.52);
+  border-color: rgba(79,158,255,0.6);
+  box-shadow:
+    inset 0 0 0 1px rgba(79,158,255,0.14),
+    0 0 0 1px rgba(40,80,160,0.5),
+    inset 0 1px 0 rgba(140,200,255,0.2),
+    0 8px 48px rgba(0,0,0,0.7),
+    0 0 24px rgba(79,158,255,0.08);
+}
+
+.catCardNum {
+  font-family: var(--font-heading);
+  font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(79,158,255,0.38); display: block; margin-bottom: 20px;
+}
+
+.catCardIcon {
+  font-size: 2.8rem; line-height: 1;
+  display: block; margin-bottom: 18px;
+}
+
+.catCardMain {
+  flex: 1; display: flex; flex-direction: column;
+}
+
+/* 主名称：超大镂空描边字 */
+.catCardName {
+  font-family: var(--font-heading);
+  font-size: 3.2rem; font-weight: 800; letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(160,200,255,0.9);
+  display: block; line-height: 1;
+  margin-bottom: 8px;
+  /* text-shadow 发光（不影响描边渲染，比 filter 稳定） */
+  text-shadow:
+    0 0 8px rgba(79,158,255,0.55),
+    0 0 20px rgba(79,158,255,0.3),
+    0 0 40px rgba(79,158,255,0.15);
+  transition: text-shadow 0.25s ease;
+}
+.catCard:hover .catCardName {
+  -webkit-text-stroke-color: rgba(200,225,255,1);
+  text-shadow:
+    0 0 8px rgba(100,180,255,0.8),
+    0 0 20px rgba(79,158,255,0.5),
+    0 0 48px rgba(79,158,255,0.28);
+}
+
+.catCardEn {
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(140,170,210,0.5); display: block; margin-bottom: 20px;
+}
+
+.catCardDesc {
+  font-size: 0.88rem; color: rgba(190,210,240,0.62);
+  line-height: 1.75; display: block;
+}
+
+.catCardMeta {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-top: auto; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.catCardCount {
+  font-family: var(--font-heading);
+  font-size: 2rem; font-weight: 700; color: #a8d4ff;
+  line-height: 1;
+}
+
+.catCardCountLabel {
+  font-size: 0.75rem; color: rgba(140,170,210,0.45); letter-spacing: 0.08em;
+}
+
+.catCardArrow {
+  position: absolute; bottom: 28px; right: 28px;
+  font-size: 1.2rem; color: rgba(79,158,255,0.3);
+  transition: color 0.2s, transform 0.25s;
+}
+.catCard:hover .catCardArrow {
+  color: rgba(79,158,255,0.9); transform: translateX(6px);
+}
+
+/* ═══════════════════════
+   游戏列表层
+   ═══════════════════════ */
+.gameLayer {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  opacity:0; transform:scale(0.97);
+  filter:blur(5px);
+  transition:opacity 0.4s ease,transform 0.4s cubic-bezier(0.22,1,0.36,1),filter 0.3s ease;
+  pointer-events:none;
+}
+.gameLayerVisible {
+  opacity:1; transform:scale(1); filter:blur(0px);
+  pointer-events:auto;
+}
+
+.gameHeader {
+  flex-shrink:0; padding:14px 24px 12px;
+  display:flex; align-items:center; gap:14px;
+  border-bottom:1px solid rgba(79,158,255,0.07);
+}
+.backBtn {
+  font-size:0.72rem; color:rgba(130,170,255,0.7);
+  background:rgba(79,158,255,0.07); border:1px solid rgba(79,158,255,0.18);
+  border-radius:4px; padding:5px 12px; cursor:pointer; letter-spacing:0.06em;
+  transition:background 0.18s,color 0.18s; flex-shrink:0;
+}
+.backBtn:hover { background:rgba(79,158,255,0.16); color:#a8d4ff; }
+
+.catTabs { display:flex; gap:8px; flex-wrap:wrap; }
+.catTab {
+  padding:5px 14px; border-radius:20px;
+  border:1px solid rgba(79,158,255,0.14); background:rgba(79,158,255,0.05);
+  color:rgba(160,190,230,0.6); font-size:0.72rem; letter-spacing:0.05em;
+  cursor:pointer; transition:background 0.2s,border-color 0.2s,color 0.2s;
+}
+.catTab:hover { background:rgba(79,158,255,0.1); color:rgba(180,210,255,0.85); }
+.catTabActive { background:rgba(79,158,255,0.18); border-color:rgba(79,158,255,0.45); color:#a8d4ff; }
+
+.gameScroll {
+  flex:1; min-height:0; overflow-y:auto; overflow-x:hidden;
+  scrollbar-width:thin; scrollbar-color:rgba(79,158,255,0.22) transparent;
+}
+.gameScroll::-webkit-scrollbar { width:4px; }
+.gameScroll::-webkit-scrollbar-thumb { background:rgba(79,158,255,0.22); border-radius:2px; }
+
+/* Masonry 容器：需要 overflow+scroll，内部 .list 用绝对定位堆叠 */
+.masonryWrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 14px 18px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79,158,255,0.22) transparent;
+  /* 给 .list 一个撑开的最小高度参考，Masonry 会动态计算实际高度 */
+}
+.masonryWrap::-webkit-scrollbar { width: 4px; }
+.masonryWrap::-webkit-scrollbar-thumb { background: rgba(79,158,255,0.22); border-radius: 2px; }
+/* .list 是 Masonry 内部类（全局），相对定位撑高 */
+.masonryWrap :global(.list) {
+  min-height: 600px;
+}

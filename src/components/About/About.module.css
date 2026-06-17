@@ -1,0 +1,409 @@
+.section {
+  padding: 140px 0 120px;
+  background: transparent;
+  position: relative;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* Section label */
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.labelLine {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Left: Avatar */
+.left {
+  /* initial hidden state owned by GSAP */
+}
+
+.avatarWrap {
+  position: relative;
+  width: 400px;
+}
+
+/* 外层容器：触发胶卷展开 */
+.avatarContainer {
+  position: relative;
+  width: 400px;
+}
+
+.avatarContainer:hover .filmstrip,
+.avatarContainer:focus-within .filmstrip {
+  max-height: 150px;
+  opacity: 1;
+}
+
+.avatarContainer:hover .filmstripInner,
+.avatarContainer:focus-within .filmstripInner {
+  transform: translateY(0);
+}
+
+.avatarImg {
+  width: 400px;
+  height: 230px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 4px;
+  display: block;
+  transition: opacity 0.13s ease, filter 0.35s ease;
+}
+
+.avatarFading {
+  opacity: 0;
+}
+
+.avatarContainer:hover .avatarImg:not(.avatarFading) {
+  filter: brightness(0.85);
+}
+
+.avatarBorder {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: -16px;
+  bottom: -16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── 胶卷条 ── */
+.filmstrip {
+  width: 100%;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(79, 158, 255, 0.08);
+}
+
+.filmstripInner {
+  background: linear-gradient(180deg, #0a0c14 0%, #0d0f1a 100%);
+  border-top: 1px solid rgba(79, 158, 255, 0.15);
+  transform: translateY(-8px);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.filmHoles {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.hole {
+  width: 9px;
+  height: 6px;
+  border-radius: 1px;
+  background: #1a1d2e;
+  border: 1px solid rgba(79, 158, 255, 0.12);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.6);
+}
+
+.filmFrames {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+
+.filmFrames::-webkit-scrollbar {
+  display: none;
+}
+
+.frame {
+  flex-shrink: 0;
+  width: 84px;
+  height: 78px;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  transition: border-color 0.2s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: sepia(0.25) brightness(0.75) saturate(0.8);
+  transition: filter 0.25s ease, transform 0.25s ease;
+  display: block;
+}
+
+.frame:hover img {
+  filter: sepia(0) brightness(1) saturate(1);
+  transform: scale(1.06);
+}
+
+.frame:hover {
+  border-color: rgba(79, 158, 255, 0.6);
+  box-shadow: 0 0 12px rgba(79, 158, 255, 0.2), 0 2px 8px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.frameActive {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 14px rgba(79, 158, 255, 0.35) !important;
+}
+
+.frameActive img {
+  filter: sepia(0) brightness(1) saturate(1) !important;
+}
+
+.frameIndex {
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  font-size: 0.5rem;
+  font-family: var(--font-heading);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.scrollTrack {
+  position: relative;
+  height: 3px;
+  margin: 0 10px 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.scrollThumb {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: rgba(79, 158, 255, 0.55);
+  border-radius: 2px;
+  transition: background 0.2s ease;
+  pointer-events: none;
+}
+
+.scrollTrack:hover .scrollThumb {
+  background: rgba(79, 158, 255, 0.85);
+}
+
+/* Right: Text */
+.right {
+  padding-top: 8px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(79, 158, 255, 0.25);
+  padding: 0.3rem 0.75rem;
+  border-radius: 2px;
+  background: var(--accent-dim);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 1.75rem;
+  color: var(--text-primary);
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.bio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 2.5rem;
+}
+
+.bio p {
+  font-size: 0.975rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 560px;
+}
+
+/* Meta */
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 80px;
+}
+
+.metaValue {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 6px rgba(61, 220, 132, 0.6);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── 军事爱好者 tag ── */
+.tagMilitary {
+  cursor: default;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.tagMilitary:hover {
+  border-color: rgba(251,191,36,0.55);
+  color: #fbbf24;
+  background: rgba(251,191,36,0.08);
+}
+
+/* ── Consent 弹窗 ── */
+.consentOverlay {
+  position: fixed; inset: 0; z-index: 250;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  animation: consentFadeIn 0.22s ease both;
+}
+@keyframes consentFadeIn { from{opacity:0} to{opacity:1} }
+
+.consentCard {
+  background: rgba(6,10,24,0.97);
+  border: 1px solid rgba(251,191,36,0.35);
+  border-radius: 10px;
+  padding: 28px 32px 24px;
+  max-width: 380px; width: 90%;
+  box-shadow: 0 16px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(251,191,36,0.08);
+  animation: cardPop 0.3s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes cardPop {
+  from{ transform:scale(0.9); opacity:0; }
+  to  { transform:scale(1);   opacity:1; }
+}
+
+.consentText {
+  font-size: 0.9rem; color: rgba(220,230,255,0.88);
+  line-height: 1.7; margin: 0 0 20px; text-align: center;
+}
+
+.consentBtns {
+  display: flex; gap: 10px; justify-content: center;
+}
+
+.btnConfirm {
+  padding: 8px 22px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+  color: #e8f0ff;
+  background: rgba(79,158,255,0.18);
+  border: 1px solid rgba(79,158,255,0.45);
+  border-radius: 4px; cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.btnConfirm:hover { background: rgba(79,158,255,0.32); border-color: #4f9eff; }
+
+.btnRefuse {
+  padding: 8px 22px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+  color: rgba(180,190,210,0.6);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px; cursor: pointer;
+  transition: background 0.18s;
+}
+.btnRefuse:hover { background: rgba(255,255,255,0.09); }
+
+.refuseMsg {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: #f87171;
+  text-align: center; margin: 0;
+  padding: 8px 0;
+  text-shadow: 0 0 16px rgba(248,113,113,0.6);
+  animation: refuseShake 0.35s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes refuseShake {
+  0%  { transform:translateX(-6px); opacity:0; }
+  40% { transform:translateX(4px);  opacity:1; }
+  70% { transform:translateX(-2px); }
+  100%{ transform:translateX(0); }
+}

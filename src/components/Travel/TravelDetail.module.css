@@ -1,0 +1,566 @@
+/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(4, 6, 14, 0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  animation: overlayIn 0.32s ease both;
+}
+.overlayClosing { animation: overlayOut 0.3s ease both; }
+@keyframes overlayIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes overlayOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* ── Panel ── */
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 1260px;
+  height: calc(100vh - 64px);
+  max-height: 860px;
+  background: linear-gradient(160deg, #080c1e 0%, #060916 100%);
+  border: 1px solid rgba(79, 158, 255, 0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: panelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(79,158,255,0.07);
+}
+.panelClosing { animation: panelOut 0.28s cubic-bezier(0.4,0,1,1) both; }
+@keyframes panelIn  { from { opacity:0; transform: translateY(28px) scale(0.96); } to { opacity:1; transform: none; } }
+@keyframes panelOut { from { opacity:1; transform: none; } to { opacity:0; transform: translateY(18px) scale(0.97); } }
+
+/* ── 关闭按钮 ── */
+.closeBtn {
+  position: absolute;
+  top: 20px; right: 24px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.45);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 10;
+}
+.closeBtn:hover {
+  background: rgba(79,158,255,0.12);
+  color: #4f9eff;
+  border-color: rgba(79,158,255,0.4);
+}
+
+/* ── Header ── */
+.header {
+  flex-shrink: 0;
+  padding: 26px 44px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(to right, rgba(79,158,255,0.04) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  animation: fadeSlideDown 0.35s cubic-bezier(0.4,0,0.2,1) 0.1s both;
+}
+@keyframes fadeSlideDown {
+  from { opacity:0; transform: translateY(-10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.headerLabel {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #4f9eff;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.headerTitle {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #e8eaf0;
+  margin-bottom: 0.2rem;
+}
+.headerSub {
+  font-size: 0.8rem;
+  color: rgba(180,190,210,0.55);
+}
+
+/* ── 地区切换标签 ── */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-right: 56px;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 18px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  color: rgba(180,190,210,0.55);
+  cursor: pointer;
+  transition: background 0.22s, border-color 0.22s, color 0.22s;
+  min-width: 88px;
+}
+.tab:hover {
+  background: rgba(79,158,255,0.07);
+  border-color: rgba(79,158,255,0.2);
+  color: rgba(200,215,240,0.85);
+}
+.tabActive {
+  background: rgba(79,158,255,0.12);
+  border-color: rgba(79,158,255,0.38);
+  color: #a8d4ff;
+}
+
+.tabIcon {
+  width: 44px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tabIcon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+}
+.tabLabel {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.tabLabelEn {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ── 地图区域 ── */
+.mapWrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 球面弧度装饰圈 */
+.globeRing {
+  position: absolute;
+  width: min(90vw, 820px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(79,158,255,0.07);
+  box-shadow:
+    inset 0 0 80px rgba(30,60,120,0.18),
+    0 0 60px rgba(30,60,120,0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 地理路径 */
+.geo {
+  fill: rgba(18, 24, 48, 0.7);
+  stroke: rgba(79, 158, 255, 0.22);
+  stroke-width: 0.5;
+  outline: none;
+}
+.geoVisited {
+  fill: rgba(36, 64, 120, 0.55);
+  stroke: rgba(79, 158, 255, 0.5);
+  stroke-width: 0.7;
+  outline: none;
+}
+
+/* ── marker 入场淡入（intro 结束后） ── */
+.markerGroup {
+  cursor: pointer;
+  animation: markerFadeIn 0.5s ease both;
+}
+@keyframes markerFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.markerPulse {
+  fill: rgba(79,158,255,0.1);
+  stroke: rgba(79,158,255,0.25);
+  stroke-width: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: markerPulseAnim 2.4s ease-in-out infinite;
+}
+@keyframes markerPulseAnim {
+  0%, 100% { transform: scale(1);    opacity: 0.5; }
+  50%       { transform: scale(1.35); opacity: 0.12; }
+}
+
+/* drilldown 类型额外虚线圈 */
+.markerDrillRing {
+  fill: none;
+  stroke: rgba(79,158,255,0.4);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 2;
+  animation: spinRing 8s linear infinite;
+}
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.markerBubble {
+  fill: rgba(8, 12, 30, 0.92);
+  stroke: rgba(79,158,255,0.55);
+  stroke-width: 1;
+  transition: stroke 0.2s, fill 0.2s;
+}
+.markerGroup:hover .markerBubble,
+.markerActive {
+  fill: rgba(20, 36, 80, 0.92);
+  stroke: rgba(130, 190, 255, 0.9);
+  stroke-width: 1.5;
+}
+
+.markerLabel {
+  font-size: 7px;
+  fill: rgba(180, 210, 255, 0.65);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  font-family: var(--font-body);
+}
+
+/* ── drill-down 覆盖层 ── */
+.drilldownWrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  background: linear-gradient(160deg, #080c1e 0%, #060916 100%);
+  z-index: 8;
+  animation: drillIn 0.35s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes drillIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.drillMapArea {
+  position: relative;
+  overflow: hidden;
+}
+
+.drillInfoPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 28px 24px 24px;
+  border-left: 1px solid rgba(79,158,255,0.1);
+  background: rgba(8,12,28,0.6);
+  overflow-y: auto;
+}
+
+.drillbackBtn {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  color: rgba(130,170,255,0.7);
+  background: rgba(79,158,255,0.06);
+  border: 1px solid rgba(79,158,255,0.18);
+  border-radius: 4px;
+  padding: 5px 12px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: background 0.18s, color 0.18s;
+}
+.drillbackBtn:hover {
+  background: rgba(79,158,255,0.15);
+  color: #a8d4ff;
+}
+
+.drillFlagImg {
+  width: 64px;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+.drillName {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #e8eaf0;
+  letter-spacing: -0.02em;
+}
+.drillYear {
+  font-size: 0.68rem;
+  color: #4f9eff;
+  letter-spacing: 0.1em;
+}
+
+.drillBrief {
+  font-size: 0.78rem;
+  color: rgba(180,195,220,0.72);
+  line-height: 1.75;
+  font-style: italic;
+  border-left: 2px solid rgba(79,158,255,0.28);
+  padding-left: 10px;
+}
+
+.drillCitiesLabel {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(180,190,210,0.45);
+  margin-bottom: 8px;
+}
+.drillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.drillTag {
+  font-size: 0.65rem;
+  padding: 3px 10px;
+  border-radius: 3px;
+  background: rgba(79,158,255,0.1);
+  color: rgba(160,200,255,0.8);
+  border: 1px solid rgba(79,158,255,0.2);
+  letter-spacing: 0.04em;
+}
+
+/* drill-down 地理样式 */
+.geoDrillTarget {
+  fill: rgba(30, 60, 130, 0.6);
+  stroke: rgba(79,158,255,0.65);
+  stroke-width: 0.6;
+  outline: none;
+}
+.geoDrillOther {
+  fill: rgba(12, 16, 36, 0.5);
+  stroke: rgba(79,158,255,0.12);
+  stroke-width: 0.3;
+  outline: none;
+}
+
+/* drill-down 城市点 */
+.cityPulse {
+  fill: rgba(79,158,255,0.12);
+  stroke: rgba(79,158,255,0.3);
+  stroke-width: 0.3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cityPulseAnim 2s ease-in-out infinite;
+  transition: fill 0.2s;
+}
+@keyframes cityPulseAnim {
+  0%, 100% { transform: scale(1);   opacity: 0.5; }
+  50%       { transform: scale(1.5); opacity: 0.15; }
+}
+.cityPulseActive {
+  fill: rgba(79,158,255,0.28);
+  stroke: rgba(130,190,255,0.7);
+}
+.cityDot {
+  fill: rgba(160,210,255,0.9);
+  stroke: rgba(255,255,255,0.5);
+  stroke-width: 0.3;
+  transition: fill 0.2s;
+}
+.cityDotActive {
+  fill: #fff;
+  stroke: rgba(79,158,255,0.9);
+}
+.cityLabel {
+  fill: rgba(200,220,255,0.75);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  font-family: var(--font-body);
+}
+
+/* ── 城市弹窗 ── */
+.cityPopup {
+  position: absolute;
+  width: 260px;
+  background: linear-gradient(145deg, #0d1226 0%, #0a0e1e 100%);
+  border: 1px solid rgba(79,158,255,0.28);
+  border-radius: 8px;
+  padding: 13px 15px 12px;
+  z-index: 12;
+  pointer-events: auto;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.65), 0 0 16px rgba(79,158,255,0.07);
+  animation: popupIn 0.22s cubic-bezier(0.22,1,0.36,1) both;
+}
+.cityPopupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.cityPopupName {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e8eaf0;
+  letter-spacing: -0.01em;
+}
+.cityPopupBrief {
+  font-size: 0.74rem;
+  color: rgba(180,195,220,0.72);
+  line-height: 1.7;
+  font-style: italic;
+  border-left: 2px solid rgba(79,158,255,0.28);
+  padding-left: 9px;
+}
+
+/* 城市标签点击高亮 */
+.drillTagActive {
+  background: rgba(79,158,255,0.22);
+  border-color: rgba(79,158,255,0.5);
+  color: #c8e4ff;
+}
+
+/* ── 信息卡片弹窗（JS 定位） ── */
+.popup {
+  position: absolute;
+  width: 296px;
+  background: linear-gradient(145deg, #0d1226 0%, #0a0e1e 100%);
+  border: 1px solid rgba(79,158,255,0.3);
+  border-radius: 10px;
+  padding: 16px 18px 14px;
+  z-index: 10;
+  pointer-events: auto;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 24px rgba(79,158,255,0.08);
+  animation: popupIn 0.24s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes popupIn {
+  from { opacity:0; transform: translateY(8px) scale(0.97); }
+  to   { opacity:1; transform: translateY(0)   scale(1); }
+}
+
+.popupHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.popupFlag {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.popupName {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e8eaf0;
+  letter-spacing: -0.01em;
+}
+.popupYear {
+  font-size: 0.68rem;
+  color: #4f9eff;
+  letter-spacing: 0.1em;
+}
+.popupFlagImg {
+  width: 40px;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  flex-shrink: 0;
+}
+.popupMeta {
+  flex: 1;
+  min-width: 0;
+}
+.popupClose {
+  margin-left: auto;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s, color 0.18s;
+  flex-shrink: 0;
+}
+.popupClose:hover {
+  background: rgba(79,158,255,0.15);
+  color: #4f9eff;
+}
+
+.popupBrief {
+  font-size: 0.78rem;
+  color: rgba(180,195,220,0.75);
+  line-height: 1.7;
+  margin-bottom: 12px;
+  font-style: italic;
+  border-left: 2px solid rgba(79,158,255,0.3);
+  padding-left: 10px;
+}
+.popupTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.popupTag {
+  font-size: 0.62rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(79,158,255,0.12);
+  color: rgba(160,200,255,0.8);
+  border: 1px solid rgba(79,158,255,0.22);
+  letter-spacing: 0.04em;
+}
+
+/* ── 图例 ── */
+.legend {
+  position: absolute;
+  bottom: 20px;
+  right: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 5;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.68rem;
+  color: rgba(180,190,210,0.5);
+  letter-spacing: 0.05em;
+}
+.legendDot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  background: rgba(18,24,48,0.7);
+  border: 1px solid rgba(79,158,255,0.22);
+}
+.legendDotVisited {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  background: rgba(36,64,120,0.55);
+  border: 1px solid rgba(79,158,255,0.5);
+}

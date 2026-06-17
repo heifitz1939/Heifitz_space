@@ -1,0 +1,349 @@
+/* ── Overlay：固定全屏，内部不滚动 ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(5, 5, 10, 0.82);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  animation: overlayIn 0.32s ease both;
+}
+
+.overlayClosing {
+  animation: overlayOut 0.3s ease both;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes overlayOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ── Panel：固定高度，内部自管理滚动 ── */
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 1300px;
+  height: calc(100vh - 64px);
+  max-height: 900px;
+  background: linear-gradient(160deg, #0d0f1c 0%, #0a0c18 100%);
+  border: 1px solid rgba(79, 158, 255, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: panelIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(79,158,255,0.08);
+}
+
+.panelClosing {
+  animation: panelOut 0.28s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(32px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+@keyframes panelOut {
+  from { opacity: 1; transform: translateY(0)   scale(1); }
+  to   { opacity: 0; transform: translateY(20px) scale(0.97); }
+}
+
+/* ── 关闭按钮 ── */
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 10;
+}
+
+.closeBtn:hover {
+  background: rgba(79, 158, 255, 0.12);
+  color: var(--accent);
+  border-color: rgba(79, 158, 255, 0.4);
+}
+
+/* ── Header：固定在 panel 顶部 ── */
+.header {
+  flex-shrink: 0;
+  padding: 28px 44px 22px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(to right, rgba(79,158,255,0.04) 0%, transparent 60%);
+  animation: fadeSlideDown 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.headerLabel {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.headerTitle {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.headerSub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ── Body：撑满剩余高度，左右两栏 ── */
+.body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  flex: 1;
+  min-height: 0;   /* 关键：让 flex 子项可以收缩 */
+}
+
+/* ── 左栏：固定，不滚动 ── */
+.sidebar {
+  padding: 24px 24px 24px 32px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  overflow: hidden;
+  animation: fadeSlideLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.18s both;
+}
+
+@keyframes fadeSlideLeft {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.sideTitle {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.tasteList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.2rem;
+}
+
+.tasteRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tasteName {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  min-width: 62px;
+  letter-spacing: 0.02em;
+}
+
+.tasteBar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.tasteBarFill {
+  height: 100%;
+  background: linear-gradient(to right, rgba(79,158,255,0.5), rgba(79,158,255,0.85));
+  border-radius: 2px;
+}
+
+.tasteVal {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  min-width: 22px;
+  text-align: right;
+}
+
+/* ── 右栏：可滚动区域 ── */
+.cardScroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79,158,255,0.3) transparent;
+}
+
+.cardScroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cardScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cardScroll::-webkit-scrollbar-thumb {
+  background: rgba(79,158,255,0.3);
+  border-radius: 2px;
+}
+
+.cardGrid {
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-content: start;
+}
+
+/* ── 番剧卡片 ── */
+.animeCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--idx, 0) * 0.05s + 0.25s);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.animeCard:hover {
+  border-color: rgba(79, 158, 255, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(79,158,255,0.06);
+}
+
+.coverWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease, filter 0.3s ease;
+  filter: brightness(0.88) saturate(0.9);
+}
+
+.animeCard:hover .cover {
+  transform: scale(1.04);
+  filter: brightness(1) saturate(1);
+}
+
+.coverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9,9,15,0.85) 0%, transparent 50%);
+}
+
+.tagRow {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(79,158,255,0.2);
+  color: rgba(179,210,255,0.9);
+  border: 1px solid rgba(79,158,255,0.25);
+}
+
+.cardBody {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.year {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.animeTitle {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+/* ── 星级 ── */
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.starOn  { font-size: 0.6rem; color: #f5c842; }
+.starOff { font-size: 0.6rem; color: rgba(255,255,255,0.1); }
+
+.scoreNum {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  margin-left: 5px;
+  letter-spacing: 0.05em;
+}
+
+/* ── 评语 ── */
+.comment {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+  border-left: 2px solid rgba(79,158,255,0.3);
+  padding-left: 8px;
+  margin-top: 2px;
+}
