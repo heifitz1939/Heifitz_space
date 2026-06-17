@@ -46,11 +46,10 @@ export default function Hero() {
           muted
           playsInline
           className={styles.video}
-          poster=""
-        >
-          <source src="/video/bg.mp4" type="video/mp4" />
-          <source src="https://github.com/heifitz1939/Heifitz_space/releases/download/1.1/Aemeath.mp4" type="video/mp4" />
-        </video>
+          src={import.meta.env.DEV
+            ? '/video/bg.mp4'
+            : 'https://github.com/heifitz1939/Heifitz_space/releases/download/1.1/Aemeath.mp4'}
+        />
         <div className={styles.overlay} />
       </div>
 
