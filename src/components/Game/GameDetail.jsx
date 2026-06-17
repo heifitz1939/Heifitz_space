@@ -3,6 +3,7 @@ import styles from './GameDetail.module.css'
 import GridScan from './GridScan'
 import BorderGlow from '../BorderGlow/BorderGlow'
 import Masonry from './Masonry'
+import { asset } from '../../utils/asset'
 
 const CATEGORIES = [
   {
@@ -10,34 +11,34 @@ const CATEGORIES = [
     color: 'rgba(168,85,247,0.75)',
     glowColor: '280 70 65', colors: ['#a855f7', '#c084fc', '#e879f9'],
     desc: '手游、ACG、米哈游宇宙',
-    bg: '/ams.jpg',
+    bg: asset('/ams.jpg'),
   },
   {
     id: 'war', name: '战争', nameEn: 'War / Strategy', icon: '✕',
     color: 'rgba(245,158,11,0.75)',
     glowColor: '38 90 60', colors: ['#f59e0b', '#fbbf24', '#fde68a'],
     desc: '坦克、步兵、真实战场模拟',
-    bg: '/war3.png',
+    bg: asset('/war3.png'),
   },
   {
     id: 'coop', name: '合作', nameEn: 'Co-op', icon: '◈',
     color: 'rgba(16,185,129,0.75)',
     glowColor: '160 75 50', colors: ['#10b981', '#34d399', '#6ee7b7'],
     desc: '多人协作、欢乐向、好友同乐',
-    bg: '/21f30ef8d6a2f1b6fef9de0ffcfe9433390888756.png',
+    bg: asset('/21f30ef8d6a2f1b6fef9de0ffcfe9433390888756.png'),
   },
 ]
 
 const GAMES = [
   // 二次元
   { id:'mingchao',    cat:'gacha', title:'鸣潮',       hours:'',      height:280,
-    img:'/wuwa.jpg', url:'' },
+    img: asset('/wuwa.jpg'), url:'' },
   { id:'azurelane',  cat:'gacha', title:'碧蓝航线',   hours:'',      height:260,
-    img:'/eedc890fcf4e0797e7d8a58e4225978a6b2570cb.png', url:'' },
+    img: asset('/eedc890fcf4e0797e7d8a58e4225978a6b2570cb.png'), url:'' },
   { id:'gfl',        cat:'gacha', title:'少女前线',   hours:'',      height:300,
-    img:'/1afbe8db9a6650795675297cce30a019.jpg', url:'' },
+    img: asset('/1afbe8db9a6650795675297cce30a019.jpg'), url:'' },
   { id:'nte',        cat:'gacha', title:'异环',        hours:'',      height:240,
-    img:'/1732771405_783639.jpg', url:'' },
+    img: asset('/1732771405_783639.jpg'), url:'' },
 
   // 战争
   { id:'hoi4',       cat:'war',   title:'钢铁雄心4',  hours:'300h+', height:260,
@@ -55,7 +56,7 @@ const GAMES = [
 
   // 合作
   { id:'peak',       cat:'coop',  title:'PEAK',        hours:'',      height:300,
-    img:'/OIP-C.webp', url:'' },
+    img: asset('/OIP-C.webp'), url:'' },
   { id:'lethal',     cat:'coop',  title:'致命公司',   hours:'40h+',  height:260,
     img:'https://cdn.akamai.steamstatic.com/steam/apps/1966720/library_600x900.jpg', url:'' },
   { id:'guiltyasock',cat:'coop',  title:'袜罪并罚',   hours:'',      height:280,
@@ -121,7 +122,7 @@ export default function GameDetail({ onClose }) {
   const isScanning  = introStage === 'scanning'
   const isRevealing = introStage === 'revealing'
 
-  const currentBg = CATEGORIES.find(c => c.id === displayCat)?.bg ?? '/war1.webp'
+  const currentBg = CATEGORIES.find(c => c.id === displayCat)?.bg ?? asset('/war1.webp')
   const prevBg    = prevCat ? CATEGORIES.find(c => c.id === prevCat)?.bg : null
 
   return (
@@ -134,7 +135,7 @@ export default function GameDetail({ onClose }) {
         <div className={styles.bgLayer} aria-hidden>
           {phase === 'menu' ? (
             /* 主菜单：原始壁纸静态显示 */
-            <div className={styles.bgStatic} style={{ backgroundImage: 'url(/war1.webp)' }} />
+            <div className={styles.bgStatic} style={{ backgroundImage: `url(${asset('/war1.webp')})` }} />
           ) : (
             /* 游戏列表：砖块切换 */
             <>

@@ -96,7 +96,6 @@
 }
 .item-warning[data-stage="4"] {
   clip-path: circle(100% at 50% 50%);
-  background: url("/bc65dbc9c099a9cd7ad4c5f840a43f1f372688037.jpg@1052w_!web-dynamic.webp") center center / cover no-repeat;
   border-color: rgba(255,200,80,0.6);
   box-shadow: 0 0 0 1px rgba(255,200,80,0.2), inset 0 0 60px rgba(0,0,0,0.55);
 }

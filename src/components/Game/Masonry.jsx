@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import './Masonry.css';
+import { asset } from '../../utils/asset';
 
 const useMedia = (queries, values, defaultValue) => {
   const get = () => values[queries.findIndex(q => matchMedia(q).matches)] ?? defaultValue;
@@ -176,7 +177,7 @@ const Masonry = ({
               {item.hours && <span className="item-hours">{item.hours}</span>}
             </div>
             {item.warning && warningActive === item.id && (
-              <div className="item-warning" data-stage={warningStage}>
+              <div className="item-warning" data-stage={warningStage} style={warningStage === 4 ? { backgroundImage: `url(${asset('/bc65dbc9c099a9cd7ad4c5f840a43f1f372688037.jpg@1052w_!web-dynamic.webp')})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}>
                 {warningStage === 1 && (
                   <span className="item-warning-s1">！！！</span>
                 )}

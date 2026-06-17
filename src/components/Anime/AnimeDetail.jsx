@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import RadarChart from './RadarChart'
 import styles from './AnimeDetail.module.css'
+import { asset } from '../../utils/asset'
 
 /* ── 口味雷达数据（0-100） ── */
 const TASTE = [
@@ -16,7 +17,7 @@ const TASTE = [
 const ANIME_LIST = [
   {
     title: '86 不存在的战区',
-    src: '/anime/86.jpeg',
+    src: asset('/anime/86.jpeg'),
     year: 2021,
     score: 10,
     tags: ['机甲', '战争', '热血'],
@@ -24,7 +25,7 @@ const ANIME_LIST = [
   },
   {
     title: '葬送的芙莉莲',
-    src: '/anime/frieren.jpeg',
+    src: asset('/anime/frieren.jpeg'),
     year: 2023,
     score: 10,
     tags: ['奇幻', '治愈', '冒险'],
@@ -32,7 +33,7 @@ const ANIME_LIST = [
   },
   {
     title: 'Fate/Zero',
-    src: '/anime/fatezero.jpeg',
+    src: asset('/anime/fatezero.jpeg'),
     year: 2011,
     score: 9,
     tags: ['战争', '奇幻', '悬疑'],
@@ -40,7 +41,7 @@ const ANIME_LIST = [
   },
   {
     title: '死亡笔记',
-    src: '/anime/deathnote.jpeg',
+    src: asset('/anime/deathnote.jpeg'),
     year: 2006,
     score: 7,
     tags: ['悬疑', '心理', '犯罪'],
@@ -48,7 +49,7 @@ const ANIME_LIST = [
   },
   {
     title: '刀剑神域',
-    src: '/anime/sao.jpeg',
+    src: asset('/anime/sao.jpeg'),
     year: 2012,
     score: 10,
     tags: ['奇幻', '热血', '冒险'],
@@ -56,7 +57,7 @@ const ANIME_LIST = [
   },
   {
     title: '某科学的超电磁炮',
-    src: '/anime/railgun.jpg',
+    src: asset('/anime/railgun.jpg'),
     year: 2009,
     score: 9,
     tags: ['科幻', '热血', '日常'],
@@ -64,7 +65,7 @@ const ANIME_LIST = [
   },
   {
     title: '判处勇者刑',
-    src: '/anime/yuusha.jpeg',
+    src: asset('/anime/yuusha.jpeg'),
     year: 2024,
     score: 9,
     tags: ['奇幻', '热血', '战斗'],
@@ -72,7 +73,7 @@ const ANIME_LIST = [
   },
   {
     title: '斩赤红之瞳',
-    src: '/anime/akame.jpeg',
+    src: asset('/anime/akame.jpeg'),
     year: 2014,
     score: 8,
     tags: ['热血', '战斗', '黑暗'],
@@ -80,7 +81,7 @@ const ANIME_LIST = [
   },
   {
     title: '百妖谱',
-    src: '/anime/baiyaopu.jpeg',
+    src: asset('/anime/baiyaopu.jpeg'),
     year: 2022,
     score: 9,
     tags: ['治愈', '奇幻', '国漫'],
@@ -88,7 +89,7 @@ const ANIME_LIST = [
   },
   {
     title: '无名记忆',
-    src: '/anime/unnamed.jpeg',
+    src: asset('/anime/unnamed.jpeg'),
     year: 2023,
     score: 9,
     tags: ['奇幻', '恋爱', '冒险'],
@@ -96,7 +97,7 @@ const ANIME_LIST = [
   },
   {
     title: '天才王子的赤字国家振兴术',
-    src: '/anime/tensai.jpeg',
+    src: asset('/anime/tensai.jpeg'),
     year: 2022,
     score: 9,
     tags: ['奇幻', '政治', '喜剧'],
@@ -104,7 +105,7 @@ const ANIME_LIST = [
   },
   {
     title: '咒术回战',
-    src: '/anime/jjk.jpg',
+    src: asset('/anime/jjk.jpg'),
     year: 2020,
     score: 9,
     tags: ['热血', '战斗', '悬疑'],
@@ -112,7 +113,7 @@ const ANIME_LIST = [
   },
   {
     title: '终结的炽天使',
-    src: '/anime/seraph.jpeg',
+    src: asset('/anime/seraph.jpeg'),
     year: 2015,
     score: 8,
     tags: ['热血', '战斗', '末世'],

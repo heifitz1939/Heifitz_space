@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import styles from './SJMAModal.module.css'
+import { asset } from '../../utils/asset'
 
-const BANNER = '/微信图片_20260617221758_318_115.jpg'
-const EMBEDDED = '/屏幕截图 2026-06-17 221927.png'
-const STAMP = '/微信图片_20260617222347_319_115.jpg'
+const BANNER = asset('/微信图片_20260617221758_318_115.jpg')
+const EMBEDDED = asset('/屏幕截图 2026-06-17 221927.png')
+const STAMP = asset('/微信图片_20260617222347_319_115.jpg')
 
 export default function SJMAModal({ screen, onNext, onClose }) {
   const [closing, setClosing] = useState(false)

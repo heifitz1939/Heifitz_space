@@ -3,16 +3,17 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './About.module.css'
 import SJMAModal from './SJMAModal'
+import { asset } from '../../utils/asset'
 
 const tags = ['智能感知 24级', '二次元', '羽毛球', '军事爱好者']
 
 const MILITARY_TAG = '军事爱好者'
 
 const photos = [
-  { src: '/avatar.jpg',    pos: 'center center' },
-  { src: '/gallery-1.jpg', pos: 'center top'    },
-  { src: '/gallery-3.jpg', pos: 'center top'    },
-  { src: '/gallery-4.jpg', pos: 'center 18%'    },
+  { src: asset('/avatar.jpg'),    pos: 'center center' },
+  { src: asset('/gallery-1.jpg'), pos: 'center top'    },
+  { src: asset('/gallery-3.jpg'), pos: 'center top'    },
+  { src: asset('/gallery-4.jpg'), pos: 'center 18%'    },
 ]
 
 export default function About() {

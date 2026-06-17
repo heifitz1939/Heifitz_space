@@ -8,6 +8,7 @@ import TravelDetail from '../Travel/TravelDetail'
 import GameDetail from '../Game/GameDetail'
 import GameDetailA from '../Game/GameDetailA'
 import LifeDetail from '../Life/LifeDetail'
+import { asset } from '../../utils/asset'
 
 /* 切换此常量来对比两个方案：'A' = 方案A，'B' = 方案B */
 const GAME_VERSION = 'B'
@@ -20,7 +21,7 @@ const categories = [
     titleEn: 'Anime',
     desc: '看过的番剧、评分与标签',
     stat: '记录中',
-    img: '/f5d6e92d96274663ca5f5d07855c5ff26ce242a8.jpg@1192w.webp',
+    img: asset('/f5d6e92d96274663ca5f5d07855c5ff26ce242a8.jpg@1192w.webp'),
     imgPosition: 'center center',
   },
   {
@@ -30,7 +31,7 @@ const categories = [
     titleEn: 'Games',
     desc: '玩过的游戏与时长分布',
     stat: '记录中',
-    img: '/warthunder.webp',
+    img: asset('/warthunder.webp'),
     imgPosition: 'center center',
   },
   {
@@ -40,7 +41,7 @@ const categories = [
     titleEn: 'Travel',
     desc: '去过的城市与足迹地图',
     stat: '记录中',
-    img: '/微信图片_20260617205506_313_115.jpg',
+    img: asset('/微信图片_20260617205506_313_115.jpg'),
     imgPosition: 'center 20%',
   },
   {
@@ -50,7 +51,7 @@ const categories = [
     titleEn: 'Life',
     desc: '时间分配与日常数据',
     stat: '记录中',
-    img: '/微信图片_20260617210758_314_115.jpg',
+    img: asset('/微信图片_20260617210758_314_115.jpg'),
     imgPosition: 'center center',
   },
 ]
