@@ -3,6 +3,8 @@ dist
 *.docx
 屏幕截图*
 微信图片*
+!public/屏幕截图*
+!public/微信图片*
 .claude
 _prompts.txt
 public/video/bg.mp4
